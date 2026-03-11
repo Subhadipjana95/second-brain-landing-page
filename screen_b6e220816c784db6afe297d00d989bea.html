@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroNest - All your AI, Unified</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #080808;
+    --surface: #111113;
+    --card: #141416;
+    --border: rgba(255,255,255,0.07);
+    --border-bright: rgba(255,255,255,0.15);
+    --text: #f0f0f0;
+    --muted: rgba(255,255,255,0.38);
+    --accent: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 64px;
+    background: rgba(8,8,8,0.75);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
+  .logo-icon {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: white; display: flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { width: 16px; height: 16px; color: #080808; }
+  nav { display: flex; align-items: center; gap: 36px; }
+  nav a { font-size: 12px; font-weight: 500; letter-spacing: 0.5px; color: var(--muted); text-decoration: none; transition: color .2s; }
+  nav a:hover { color: white; }
+  .btn-signup {
+    padding: 8px 20px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: white; color: #080808; border: none; cursor: pointer;
+    transition: opacity .2s;
+  }
+  .btn-signup:hover { opacity: 0.88; }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 120px 24px 0;
+    overflow: hidden;
+  }
+  .hero-bg-glow {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(255,255,255,0.06) 0%, transparent 70%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.04;
+    background-image: linear-gradient(var(--border-bright) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--border-bright) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 20px;
+    border: 1px solid var(--border-bright); background: rgba(255,255,255,0.04);
+    font-size: 11px; font-weight: 500; color: var(--muted); margin-bottom: 32px;
+  }
+  .hero-badge span { color: rgba(255,255,255,0.6); }
+  h1.hero-title {
+    font-size: clamp(40px, 6vw, 80px); font-weight: 800; line-height: 1.1;
+    letter-spacing: -2px; max-width: 800px; margin-bottom: 24px;
+  }
+  h1.hero-title em { font-style: normal; color: rgba(255,255,255,0.55); }
+  .hero-sub {
+    font-size: 16px; color: var(--muted); max-width: 520px;
+    line-height: 1.7; margin-bottom: 40px;
+  }
+  .hero-btns { display: flex; gap: 14px; margin-bottom: 0; }
+  .btn-primary {
+    padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    background: white; color: #080808; border: none; cursor: pointer; transition: transform .2s, opacity .2s;
+  }
+  .btn-primary:hover { transform: translateY(-1px); opacity: 0.92; }
+  .btn-ghost {
+    padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    background: rgba(255,255,255,0.06); color: white;
+    border: 1px solid var(--border-bright); cursor: pointer; transition: background .2s;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+
+  /* ── HERO ORB ── */
+  .hero-orb-wrap {
+    position: relative; width: 100%; max-width: 900px;
+    margin-top: 80px; height: 320px;
+    display: flex; align-items: flex-end; justify-content: center;
+  }
+  .hero-orb {
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 30%,
+      rgba(255,255,255,0.18) 0%,
+      rgba(180,180,200,0.08) 35%,
+      rgba(50,50,80,0.05) 60%,
+      transparent 75%);
+    box-shadow:
+      0 0 120px 60px rgba(255,255,255,0.04),
+      inset 0 0 80px rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    position: absolute; bottom: -300px;
+    filter: blur(0.5px);
+  }
+  .hero-orb::before {
+    content: '';
+    position: absolute; inset: 8px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .hero-orb::after {
+    content: '';
+    position: absolute; inset: -2px; border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.12) 0%, transparent 50%);
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 120px 48px; position: relative; }
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 16px;
+  }
+  h2.section-title {
+    font-size: clamp(32px, 4vw, 52px); font-weight: 800;
+    letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px;
+  }
+  .section-sub { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 440px; margin: 0 auto; }
+  .centered { text-align: center; }
+  .max-w { max-width: 1200px; margin: 0 auto; }
+
+  /* ── PROBLEM SECTION ── */
+  #problem { background: var(--black); }
+  .problem-inner { text-align: center; }
+  .problem-scene {
+    position: relative; height: 380px; max-width: 780px; margin: 60px auto 0;
+  }
+  .problem-pill {
+    position: absolute; padding: 10px 20px; border-radius: 12px;
+    background: var(--card); border: 1px solid var(--border-bright);
+    font-size: 12px; color: rgba(255,255,255,0.55);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    animation: float 6s ease-in-out infinite;
+  }
+  .problem-pill.p1 { top: 40px; left: 0; animation-delay: 0s; }
+  .problem-pill.p2 { top: 30px; right: 0; animation-delay: -2s; }
+  .problem-pill.p3 { bottom: 60px; left: 40px; animation-delay: -4s; }
+  .problem-pill.p4 { bottom: 80px; right: 20px; animation-delay: -1s; }
+  .problem-pill.p5 { top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: -3s; }
+  .orbit-ring {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%; border: 1px dashed rgba(255,255,255,0.1);
+  }
+  .orbit-ring.r1 { width: 160px; height: 160px; animation: spin 15s linear infinite; }
+  .orbit-ring.r2 { width: 280px; height: 280px; animation: spin 25s linear infinite reverse; }
+  .orbit-ring.r3 { width: 380px; height: 380px; animation: spin 40s linear infinite; }
+
+  @keyframes spin { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  /* ── PRODUCT DEMO ── */
+  #demo { background: var(--black); border-top: 1px solid var(--border); }
+  .demo-window {
+    max-width: 1000px; margin: 60px auto 0;
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border-bright);
+    box-shadow: 0 0 80px rgba(255,255,255,0.03), 0 40px 100px rgba(0,0,0,0.6);
+  }
+  .demo-bar {
+    background: #0e0e10; padding: 14px 18px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .demo-dots { display: flex; gap: 6px; }
+  .demo-dots span { width: 11px; height: 11px; border-radius: 50%; }
+  .demo-dots .r { background: #ff5f56; }
+  .demo-dots .y { background: #ffbd2e; }
+  .demo-dots .g { background: #27c93f; }
+  .demo-url {
+    flex: 1; background: rgba(255,255,255,0.05); border-radius: 6px;
+    padding: 5px 14px; font-size: 11px; color: var(--muted); text-align: center;
+  }
+  .demo-body {
+    display: grid; grid-template-columns: 200px 1fr;
+    background: #0a0a0c; min-height: 420px;
+  }
+  .demo-sidebar {
+    border-right: 1px solid var(--border); padding: 20px 0;
+  }
+  .demo-sidebar-item {
+    padding: 9px 18px; font-size: 11px; color: var(--muted); cursor: pointer;
+    transition: background .15s; display: flex; align-items: center; gap: 10px;
+  }
+  .demo-sidebar-item:hover, .demo-sidebar-item.active {
+    background: rgba(255,255,255,0.05); color: white;
+  }
+  .demo-sidebar-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-bright); flex-shrink: 0; }
+  .demo-sidebar-item.active .dot { background: white; }
+  .demo-main { padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .demo-stat-row { display: flex; gap: 12px; }
+  .demo-stat {
+    flex: 1; padding: 16px 18px; border-radius: 10px;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  }
+  .demo-stat-label { font-size: 10px; color: var(--muted); margin-bottom: 6px; }
+  .demo-stat-val { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+  .demo-stat-val.green { color: #4ade80; }
+  .demo-stat-val.blue { color: #60a5fa; }
+  .demo-chart {
+    flex: 1; border-radius: 10px; background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border); padding: 16px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .demo-chart-label { font-size: 10px; color: var(--muted); }
+  .demo-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+  .demo-bar-item {
+    flex: 1; border-radius: 4px 4px 0 0;
+    background: rgba(255,255,255,0.12);
+  }
+  .demo-list { display: flex; flex-direction: column; gap: 6px; }
+  .demo-list-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; border-radius: 8px; background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border); font-size: 11px; color: var(--muted);
+  }
+  .demo-list-item .tag {
+    padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: 600;
+    background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.5);
+  }
+  .demo-list-item .tag.green { background: rgba(74,222,128,0.12); color: #4ade80; }
+
+  /* ── FEATURES ── */
+  #features { background: var(--black); border-top: 1px solid var(--border); }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 16px; max-width: 1100px; margin: 60px auto 0;
+  }
+  .feat-card {
+    background: var(--card); border: 1px solid var(--border-bright);
+    border-radius: 16px; padding: 30px; position: relative; overflow: hidden;
+    transition: border-color .3s;
+  }
+  .feat-card:hover { border-color: rgba(255,255,255,0.22); }
+  .feat-card.wide { grid-column: span 2; }
+  .feat-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  }
+  .feat-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(255,255,255,0.07); border: 1px solid var(--border-bright);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; margin-bottom: 18px;
+  }
+  .feat-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px; }
+  .feat-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .feat-visual {
+    margin-top: 24px; border-radius: 10px;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  /* Bar chart visual */
+  .mini-chart { display: flex; align-items: flex-end; gap: 5px; height: 80px; padding: 12px; }
+  .mini-bar { flex: 1; border-radius: 3px 3px 0 0; background: rgba(255,255,255,0.15); }
+  /* Workflow visual */
+  .mini-flow { display: flex; align-items: center; gap: 6px; padding: 16px; flex-wrap: wrap; }
+  .mini-node {
+    padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border-bright);
+    font-size: 10px; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05);
+  }
+  .mini-arrow { color: var(--muted); font-size: 12px; }
+  /* Agents visual */
+  .mini-agents { display: flex; gap: 8px; padding: 16px; }
+  .mini-agent {
+    flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04); text-align: center; font-size: 10px; color: var(--muted);
+  }
+  .mini-agent .emoji { font-size: 20px; display: block; margin-bottom: 4px; }
+  /* Logo tile */
+  .feat-logo-tile {
+    display: flex; align-items: center; justify-content: center; height: 120px;
+  }
+  .logo-3d {
+    width: 64px; height: 64px;
+    background: white; color: #080808;
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 18px; letter-spacing: -1px;
+    box-shadow: 0 20px 60px rgba(255,255,255,0.15);
+    transform: rotate(-8deg);
+  }
+
+  /* ── WHY NEURONEST ── */
+  #why { background: var(--black); border-top: 1px solid var(--border); }
+  .why-scene {
+    position: relative; height: 480px; max-width: 900px;
+    margin: 60px auto 0; display: flex; align-items: center; justify-content: center;
+  }
+  /* 3D Cube */
+  .cube-wrap {
+    position: relative; width: 180px; height: 180px;
+    perspective: 600px; z-index: 2;
+  }
+  .cube {
+    width: 180px; height: 180px;
+    transform-style: preserve-3d;
+    transform: rotateX(22deg) rotateY(35deg);
+    animation: cube-spin 20s linear infinite;
+  }
+  @keyframes cube-spin {
+    0%   { transform: rotateX(22deg) rotateY(0deg); }
+    100% { transform: rotateX(22deg) rotateY(360deg); }
+  }
+  .cube-face {
+    position: absolute; width: 180px; height: 180px;
+    border: 1px solid rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cube-face .inner {
+    width: 120px; height: 120px; border-radius: 4px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  }
+  .front  { background: rgba(255,255,255,0.05); transform: translateZ(90px); }
+  .back   { background: rgba(255,255,255,0.02); transform: rotateY(180deg) translateZ(90px); }
+  .left   { background: rgba(255,255,255,0.03); transform: rotateY(-90deg) translateZ(90px); }
+  .right  { background: rgba(255,255,255,0.03); transform: rotateY(90deg) translateZ(90px); }
+  .top    { background: rgba(255,255,255,0.08); transform: rotateX(90deg) translateZ(90px); }
+  .bottom { background: rgba(255,255,255,0.02); transform: rotateX(-90deg) translateZ(90px); }
+  .cube-glow {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 300px; height: 300px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  /* Stats around cube */
+  .stat-pill {
+    position: absolute; padding: 8px 18px; border-radius: 20px;
+    background: rgba(20,20,22,0.9); border: 1px solid var(--border-bright);
+    font-size: 12px; font-weight: 600; letter-spacing: -0.2px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    white-space: nowrap;
+  }
+  .stat-pill .num { color: white; }
+  .stat-pill .label { color: var(--muted); font-weight: 400; font-size: 11px; }
+  /* Connection lines from cube to pills via SVG */
+  .why-svg { position: absolute; inset: 0; pointer-events: none; opacity: 0.2; }
+
+  /* ── INTEGRATIONS ── */
+  #integrations { background: var(--black); border-top: 1px solid var(--border); }
+  .int-scene {
+    position: relative; width: 520px; height: 520px;
+    margin: 60px auto 0; display: flex; align-items: center; justify-content: center;
+  }
+  .int-center {
+    width: 64px; height: 64px; border-radius: 14px;
+    background: white; display: flex; align-items: center; justify-content: center;
+    font-size: 22px; z-index: 2; position: relative;
+    box-shadow: 0 0 40px rgba(255,255,255,0.2);
+  }
+  .int-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+  }
+  .int-ring.ir1 { width: 180px; height: 180px; }
+  .int-ring.ir2 { width: 320px; height: 320px; }
+  .int-ring.ir3 { width: 460px; height: 460px; }
+  .int-icon {
+    position: absolute; width: 44px; height: 44px; border-radius: 10px;
+    background: var(--card); border: 1px solid var(--border-bright);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; top: 50%; left: 50%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    transition: transform .3s; cursor: default;
+  }
+  .int-icon:hover { transform: translate(-50%,-50%) scale(1.15) !important; }
+  .int-caption { text-align: center; margin-top: 40px; font-size: 12px; color: var(--muted); }
+
+  /* ── PRICING ── */
+  #pricing { background: var(--black); border-top: 1px solid var(--border); }
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px; max-width: 1000px; margin: 60px auto 0; align-items: start;
+  }
+  .price-card {
+    border-radius: 16px; padding: 32px;
+    background: var(--card); border: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 0;
+    transition: border-color .3s;
+  }
+  .price-card:hover { border-color: var(--border-bright); }
+  .price-card.featured {
+    border-color: rgba(255,255,255,0.22);
+    background: #181820;
+    transform: translateY(-12px);
+    box-shadow: 0 0 60px rgba(255,255,255,0.04);
+  }
+  .price-tier { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .price-card h3 { font-size: 18px; font-weight: 700; line-height: 1.3; margin-bottom: 24px; letter-spacing: -0.3px; }
+  .price-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; flex: 1; }
+  .price-list li { font-size: 13px; color: rgba(255,255,255,0.6); display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; }
+  .price-list li::before { content: '→'; color: rgba(255,255,255,0.3); flex-shrink: 0; margin-top: 1px; }
+  .price-amount { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 6px; }
+  .price-amount span { font-size: 13px; font-weight: 400; color: var(--muted); }
+  .price-note { font-size: 11px; color: var(--muted); margin-bottom: 20px; }
+  .btn-price {
+    width: 100%; padding: 13px; border-radius: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: .2s; border: none;
+  }
+  .btn-price.dark { background: rgba(255,255,255,0.07); color: white; border: 1px solid var(--border); }
+  .btn-price.dark:hover { background: rgba(255,255,255,0.12); }
+  .btn-price.light { background: white; color: #080808; }
+  .btn-price.light:hover { opacity: 0.88; }
+
+  /* ── FOOTER CTA ── */
+  #footer-cta { background: var(--black); border-top: 1px solid var(--border); }
+  .cta-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 60px; padding-bottom: 80px;
+  }
+  .cta-left { grid-column: span 1; }
+  .cta-left h2 { font-size: 30px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+  .cta-left p { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+  .cta-btns { display: flex; flex-direction: column; gap: 10px; }
+  .btn-cta-outline {
+    padding: 10px 20px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    background: rgba(255,255,255,0.06); color: white; border: 1px solid var(--border);
+    cursor: pointer; transition: background .2s; text-align: center;
+  }
+  .btn-cta-outline:hover { background: rgba(255,255,255,0.1); }
+  .btn-cta-white {
+    padding: 10px 20px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    background: white; color: #080808; border: none; cursor: pointer; text-align: center;
+    transition: opacity .2s;
+  }
+  .btn-cta-white:hover { opacity: 0.88; }
+  .footer-col { display: flex; flex-direction: column; gap: 14px; }
+  .footer-col-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .footer-col a { font-size: 13px; color: rgba(255,255,255,0.65); text-decoration: none; transition: color .2s; }
+  .footer-col a:hover { color: white; }
+  .footer-bottom {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 28px; border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--muted); letter-spacing: 0.5px;
+  }
+  .footer-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; color: rgba(255,255,255,0.7); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: var(--muted); text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: white; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 19h20L12 2zm0 4.5L18.5 17h-13L12 6.5z"/></svg>
+    </div>
+    neuronest
+  </div>
+  <nav>
+    <a href="#">HOME</a>
+    <a href="#">ABOUT</a>
+    <a href="#">CAREERS</a>
+    <a href="#">CONTACT</a>
+  </nav>
+  <button class="btn-signup">Sign Up</button>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge"><span>★</span> Trusted By AI Power Users Worldwide</div>
+  <h1 class="hero-title">All your AI, Unified in<br><em>One Intelligent Nest.</em></h1>
+  <p class="hero-sub">Orchestrate models, agents, and data with precision. NeuroNest is your modular command center for everything AI — designed for clarity, speed, and control.</p>
+  <div class="hero-btns">
+    <button class="btn-primary">Start Free</button>
+    <button class="btn-ghost">Watch Demo</button>
+  </div>
+  <div class="hero-orb-wrap">
+    <div class="hero-orb"></div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="problem-inner max-w">
+    <h2 class="section-title">Fragmented AI Is<br>Slowing You Down.</h2>
+    <div class="problem-scene">
+      <div class="orbit-ring r1"></div>
+      <div class="orbit-ring r2"></div>
+      <div class="orbit-ring r3"></div>
+      <div class="problem-pill p1">Your models live in separate tabs.</div>
+      <div class="problem-pill p2">Your agents speak different languages.</div>
+      <div class="problem-pill p3">Your insights hide in disconnected dashboards.</div>
+      <div class="problem-pill p4">Context switching kills your flow.</div>
+      <div class="problem-pill p5">No single source of truth.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="max-w centered">
+    <h2 class="section-title">Meet NeuroNest</h2>
+    <p class="section-sub">The Intelligent Layer That Unifies Everything.</p>
+  </div>
+  <div class="demo-window max-w" style="max-width:960px;">
+    <div class="demo-bar">
+      <div class="demo-dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+      <div class="demo-url">https://neuronest.com/dashboard</div>
+    </div>
+    <div class="demo-body">
+      <div class="demo-sidebar">
+        <div class="demo-sidebar-item active"><span class="dot"></span> Dashboard</div>
+        <div class="demo-sidebar-item"><span class="dot"></span> Model Hub</div>
+        <div class="demo-sidebar-item"><span class="dot"></span> Workflow Builder</div>
+        <div class="demo-sidebar-item"><span class="dot"></span> Agents</div>
+        <div class="demo-sidebar-item"><span class="dot"></span> Analytics</div>
+        <div class="demo-sidebar-item"><span class="dot"></span> Integrations</div>
+        <div class="demo-sidebar-item"><span class="dot"></span> Settings</div>
+      </div>
+      <div class="demo-main">
+        <div class="demo-stat-row">
+          <div class="demo-stat"><div class="demo-stat-label">Active Models</div><div class="demo-stat-val">12</div></div>
+          <div class="demo-stat"><div class="demo-stat-label">Requests Today</div><div class="demo-stat-val green">4,829</div></div>
+          <div class="demo-stat"><div class="demo-stat-label">Avg Latency</div><div class="demo-stat-val blue">142ms</div></div>
+          <div class="demo-stat"><div class="demo-stat-label">Cost This Month</div><div class="demo-stat-val">$21.40</div></div>
+        </div>
+        <div class="demo-chart">
+          <div class="demo-chart-label">Request Volume — Last 7 Days</div>
+          <div class="demo-bars">
+            <div class="demo-bar-item" style="height:45%"></div>
+            <div class="demo-bar-item" style="height:60%"></div>
+            <div class="demo-bar-item" style="height:35%"></div>
+            <div class="demo-bar-item" style="height:80%"></div>
+            <div class="demo-bar-item" style="height:55%"></div>
+            <div class="demo-bar-item" style="height:90%"></div>
+            <div class="demo-bar-item" style="height:70%"></div>
+          </div>
+        </div>
+        <div class="demo-list">
+          <div class="demo-list-item"><span>GPT-4o</span><span class="tag green">Active</span></div>
+          <div class="demo-list-item"><span>Claude 3.5 Sonnet</span><span class="tag green">Active</span></div>
+          <div class="demo-list-item"><span>Gemini 1.5 Pro</span><span class="tag">Standby</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="max-w centered">
+    <h2 class="section-title">One Nest.<br>Infinite Possibilities.</h2>
+    <p class="section-sub">Each Feature Connects Seamlessly With The Next, Forming A Living Workspace For Every Kind Of Creator, Developer, And Strategist.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon">🧠</div>
+      <h3>AI Model Hub</h3>
+      <p>Every model. One interface. Compare, benchmark, and switch between leading LLMs.</p>
+      <div class="feat-visual">
+        <div class="mini-chart">
+          <div class="mini-bar" style="height:50%"></div>
+          <div class="mini-bar" style="height:75%"></div>
+          <div class="mini-bar" style="height:40%"></div>
+          <div class="mini-bar" style="height:90%"></div>
+          <div class="mini-bar" style="height:60%"></div>
+          <div class="mini-bar" style="height:80%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⛓️</div>
+      <h3>Workflow Builder</h3>
+      <p>Drag, connect, and orchestrate complex AI chains visually.</p>
+      <div class="feat-visual">
+        <div class="mini-flow">
+          <div class="mini-node">Input</div>
+          <div class="mini-arrow">→</div>
+          <div class="mini-node">GPT-4o</div>
+          <div class="mini-arrow">→</div>
+          <div class="mini-node">Filter</div>
+          <div class="mini-arrow">→</div>
+          <div class="mini-node">Output</div>
+        </div>
+      </div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🤖</div>
+      <h3>Quick Launch Agents</h3>
+      <p>Spin up specialized assistants for writing, research, code review, or design.</p>
+      <div class="feat-visual">
+        <div class="mini-agents">
+          <div class="mini-agent"><span class="emoji">✍️</span>Writer</div>
+          <div class="mini-agent"><span class="emoji">🔍</span>Researcher</div>
+          <div class="mini-agent"><span class="emoji">💻</span>Coder</div>
+        </div>
+      </div>
+    </div>
+    <div class="feat-card wide">
+      <div class="feat-icon">📊</div>
+      <h3>Analytics Dashboard</h3>
+      <p>Visualize performance, detect anomalies, and optimize with real insights — not guesswork.</p>
+      <div class="feat-visual">
+        <div class="mini-chart" style="height:100px;">
+          <div class="mini-bar" style="height:40%; background:rgba(255,255,255,0.1)"></div>
+          <div class="mini-bar" style="height:65%; background:rgba(255,255,255,0.14)"></div>
+          <div class="mini-bar" style="height:30%; background:rgba(255,255,255,0.1)"></div>
+          <div class="mini-bar" style="height:85%; background:rgba(255,255,255,0.18)"></div>
+          <div class="mini-bar" style="height:55%; background:rgba(255,255,255,0.13)"></div>
+          <div class="mini-bar" style="height:95%; background:rgba(255,255,255,0.2)"></div>
+          <div class="mini-bar" style="height:70%; background:rgba(255,255,255,0.15)"></div>
+          <div class="mini-bar" style="height:45%; background:rgba(255,255,255,0.11)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="feat-card" style="display:flex;align-items:center;justify-content:center;">
+      <div class="feat-logo-tile">
+        <div class="logo-3d">NN</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY NEURONEST -->
+<section id="why">
+  <div class="max-w centered">
+    <h2 class="section-title">Why NeuroNest?</h2>
+    <p class="section-sub">Real gains. Measurable impact. Not buzzwords.</p>
+  </div>
+  <div class="why-scene max-w">
+    <svg class="why-svg" viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg">
+      <line x1="450" y1="240" x2="120" y2="60"  stroke="white" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="450" y1="240" x2="60"  y2="240" stroke="white" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="450" y1="240" x2="120" y2="420" stroke="white" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="450" y1="240" x2="780" y2="60"  stroke="white" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="450" y1="240" x2="840" y2="240" stroke="white" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="450" y1="240" x2="780" y2="420" stroke="white" stroke-width="1" stroke-dasharray="4 4"/>
+    </svg>
+    <div class="cube-glow"></div>
+    <div class="cube-wrap">
+      <div class="cube">
+        <div class="cube-face front"><div class="inner"></div></div>
+        <div class="cube-face back"></div>
+        <div class="cube-face left"></div>
+        <div class="cube-face right"></div>
+        <div class="cube-face top"></div>
+        <div class="cube-face bottom"></div>
+      </div>
+    </div>
+    <!-- Left Stats -->
+    <div class="stat-pill" style="left:0;top:10%"><span class="num">45%</span> <span class="label">Cost Reduction</span></div>
+    <div class="stat-pill" style="left:0;top:50%;transform:translateY(-50%)"><span class="num">35%</span> <span class="label">Detect Anomalies</span></div>
+    <div class="stat-pill" style="left:0;bottom:10%"><span class="num">40%</span> <span class="label">Reduce Downtime</span></div>
+    <!-- Right Stats -->
+    <div class="stat-pill" style="right:0;top:10%"><span class="num">60%</span> <span class="label">Faster Processing</span></div>
+    <div class="stat-pill" style="right:0;top:50%;transform:translateY(-50%)"><span class="num">47%</span> <span class="label">Response Time ↓</span></div>
+    <div class="stat-pill" style="right:0;bottom:10%"><span class="num">65%</span> <span class="label">Increase Growth</span></div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS -->
+<section id="integrations">
+  <div class="max-w centered">
+    <p class="section-label">Integrations</p>
+    <h2 class="section-title">Plug Into Your Stack.</h2>
+    <p class="section-sub">Works seamlessly with your tools — no context switching.</p>
+  </div>
+  <div class="int-scene">
+    <div class="int-ring ir1"></div>
+    <div class="int-ring ir2"></div>
+    <div class="int-ring ir3"></div>
+    <div class="int-center">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="#080808"><path d="M12 2L2 19h20L12 2zm0 4.5L18.5 17h-13L12 6.5z"/></svg>
+    </div>
+    <!-- Ring 1 icons -->
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(0px,-90px)">🐙</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(90px,0px)">📦</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(0px,90px)">🔷</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(-90px,0px)">🤖</div>
+    <!-- Ring 2 icons -->
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(-113px,-113px)">💬</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(113px,-113px)">🔔</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(113px,113px)">📁</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(-113px,113px)">⚡</div>
+    <!-- Ring 3 icons -->
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(0px,-230px)">🎨</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(162px,-162px)">🛠️</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(230px,0px)">📊</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(162px,162px)">🔗</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(0px,230px)">🌐</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(-162px,162px)">📝</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(-230px,0px)">🔐</div>
+    <div class="int-icon" style="transform:translate(-50%,-50%) translate(-162px,-162px)">☁️</div>
+  </div>
+  <p class="int-caption">and 100+ other app integrations</p>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="max-w centered">
+    <p class="section-label">Our Services</p>
+    <h2 class="section-title">Start Free. Scale as You Grow.</h2>
+    <p class="section-sub">Transparent pricing, powerful features, and no hidden limits. Choose your perfect launchpad.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-tier">Free Plan</div>
+      <h3>For Individuals and Early Explorers.</h3>
+      <ul class="price-list">
+        <li>2 AI models — switch easily between LLMs</li>
+        <li>2 agents — build and save lightweight assistants</li>
+        <li>Limited workflows — connect basic automations</li>
+      </ul>
+      <div class="price-amount">Free</div>
+      <div class="price-note">&nbsp;</div>
+      <button class="btn-price dark">Start Free</button>
+    </div>
+    <div class="price-card featured">
+      <div class="price-tier">Pro Plan</div>
+      <h3>For Creators, Professionals, and Growing Teams.</h3>
+      <ul class="price-list">
+        <li>Unlimited models &amp; agents — mix GPT, Claude, etc.</li>
+        <li>Advanced workflows — orchestrate parallel prompts</li>
+        <li>Analytics Dashboard — track latency, cost, etc.</li>
+      </ul>
+      <div class="price-amount">$19 <span>/ month</span></div>
+      <div class="price-note">Try all Pro features free for 14 days.</div>
+      <button class="btn-price light">Start Free Trial</button>
+    </div>
+    <div class="price-card">
+      <div class="price-tier">Team / Enterprise</div>
+      <h3>For Organizations, Research Labs, and Large-Scale.</h3>
+      <ul class="price-list">
+        <li>Multi-user access — invite teammates, manage roles</li>
+        <li>Advanced orchestration — design multi-model pipelines</li>
+        <li>Dedicated support — white-glove onboarding, SLAs</li>
+      </ul>
+      <div class="price-amount">Custom Price</div>
+      <div class="price-note">&nbsp;</div>
+      <button class="btn-price dark">Contact Sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER CTA -->
+<section id="footer-cta">
+  <div class="cta-inner">
+    <div class="cta-left">
+      <h2>All Your AI,<br>One Nest.</h2>
+      <p>Stop context-switching. Start creating. Whether you're coding, designing, or building the next big thing — NeuroNest adapts to your flow.</p>
+      <div class="cta-btns">
+        <button class="btn-cta-outline">Start Free Today</button>
+        <button class="btn-cta-white">Book a Demo</button>
+      </div>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-label">Company</span>
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Careers</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-label">Resources</span>
+      <a href="#">Docs</a>
+      <a href="#">API Reference</a>
+      <a href="#">Changelog</a>
+      <a href="#">Tutorials</a>
+    </div>
+    <div class="footer-col">
+      <span class="footer-col-label">Product</span>
+      <a href="#">Features</a>
+      <a href="#">Pricing</a>
+      <a href="#">Roadmap</a>
+      <a href="#">Community</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-logo">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 19h20L12 2z"/></svg>
+      NeuroNest
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <span>© 2025 NeuroNest. All rights reserved.</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
