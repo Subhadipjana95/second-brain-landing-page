@@ -1,0 +1,741 @@
+{
+  "_meta": {
+    "purpose": "Complete landing page design prompt for Second Brain. ADDITIVE to globals.css — do not redefine any token already there: --background, --foreground, --primary:#c70036, --radius:0.45rem, --border, --card, --font-sans:Geist Mono, .dark mode class, shadcn New York style, @theme inline. This file covers ONLY what globals.css does not: visual effects layer, layout specs, component specs, animation patterns, page structure.",
+    "inspiration": "Dark AI SaaS landing page (Mufi style, Dribbble). Key traits: near-black background; a central glowing 3D orb (crimson core bleeding to purple/blue) as the recurring ambient light source; large bold white headlines with 1-2 gradient-highlighted words per section (crimson→orange); dark glass UI-mockup cards in asymmetric grids; gradient pill CTA buttons; greyscale integration logos row; platform pill-tab switcher; shadcn accordion FAQ; full-width CTA banner with rotating conic-gradient border glow; multi-column footer.",
+    "project": {
+      "name": "Second Brain",
+      "framework": "Next.js 16 App Router",
+      "ui_library": "shadcn/ui New York style — already installed",
+      "styling": "Tailwind CSS v4.2 — @theme inline already in globals.css",
+      "animation": "motion-react (Framer Motion v11+)",
+      "language": "TypeScript"
+    }
+  },
+
+  "existing_project_structure": {
+    "_note": "This is the EXACT directory tree from the project screenshot. Only create files in these locations. Do not add new top-level folders.",
+    "app": {
+      "favicon.ico": "exists",
+      "globals.css": "EXISTS — do NOT recreate. Only append new tokens at the bottom.",
+      "layout.tsx": "Modify: add dark class to html, import ThemeProvider (already exists), add CursorDot, add Navbar",
+      "page.tsx": "Modify: import all sections and compose them in order"
+    },
+    "components": {
+      "ui/": "shadcn components live here. Also place ALL custom UI primitives here — do NOT create subfolders.",
+      "theme-provider.tsx": "EXISTS — do not touch"
+    },
+    "hooks": {
+      "_note": "Create hook files here",
+      "use-in-view.ts": "CREATE: thin wrapper around motion-react useInView",
+      "use-reduced-motion.ts": "CREATE: wraps motion-react useReducedMotion"
+    },
+    "lib": {
+      "utils.ts": "EXISTS (cn helper) — do not touch",
+      "motion-variants.ts": "CREATE: all shared Framer Motion variant objects",
+      "page-data.ts": "CREATE: all static content arrays (nav, integrations, features, agents, faq, footer)"
+    },
+    "public": {
+      "_note": "Place SVG icons or OG image here. Orb is pure CSS — no image assets needed."
+    },
+    "do_not_create": [
+      "components/sections/ folder — keep sections inline in page.tsx or as exports from components/ui/",
+      "components/layout/ folder — Navbar and Footer go in components/ui/",
+      "Any additional top-level directories"
+    ]
+  },
+
+  "additive_css": {
+    "_note": "APPEND everything below to the bottom of globals.css. Nothing here conflicts with existing tokens.",
+
+    "new_css_variables": {
+      "append_inside_existing_root_and_dark_blocks": {
+        "--orb-core":          "rgba(199, 0, 54, 0.92)",
+        "--orb-mid":           "rgba(140, 0, 100, 0.55)",
+        "--orb-outer":         "rgba(40, 10, 80, 0.30)",
+        "--orb-halo":          "rgba(80, 20, 140, 0.14)",
+        "--brand-glow":        "rgba(199, 0, 54, 0.22)",
+        "--brand-glow-strong": "rgba(199, 0, 54, 0.42)",
+        "--brand-glow-soft":   "rgba(199, 0, 54, 0.10)",
+        "--surface-raised":    "#0f0f14",
+        "--surface-card":      "#111118",
+        "--surface-sunken":    "#07070b",
+        "--neural-grid":       "rgba(199, 0, 54, 0.035)",
+        "--status-active":     "#22c55e",
+        "--status-monitoring": "#f59e0b",
+        "--status-standby":    "#52525b",
+        "--marquee-duration":  "32s",
+        "--section-px":        "clamp(1.5rem, 5vw, 5rem)",
+        "--section-py":        "clamp(4rem, 8vw, 8rem)"
+      }
+    },
+
+    "append_to_existing_theme_inline_block": {
+      "--color-surface-raised":    "var(--surface-raised)",
+      "--color-surface-card":      "var(--surface-card)",
+      "--color-surface-sunken":    "var(--surface-sunken)",
+      "--color-brand-glow":        "var(--brand-glow)",
+      "--color-brand-glow-strong": "var(--brand-glow-strong)",
+      "--color-brand-glow-soft":   "var(--brand-glow-soft)",
+      "--color-status-active":     "var(--status-active)",
+      "--color-status-monitoring": "var(--status-monitoring)",
+      "--color-status-standby":    "var(--status-standby)",
+      "--animate-orb-pulse":       "orb-pulse 4s ease-in-out infinite",
+      "--animate-orb-drift":       "orb-drift 6s ease-in-out infinite",
+      "--animate-marquee":         "marquee-scroll var(--marquee-duration) linear infinite",
+      "--animate-pulse-dot":       "pulse-dot 2s ease-in-out infinite",
+      "--animate-shimmer":         "shimmer 2.5s linear infinite",
+      "--animate-scan":            "scan-line 1.8s ease-in-out",
+      "--shadow-glow-sm":          "0 0 20px var(--brand-glow-soft)",
+      "--shadow-glow-md":          "0 0 40px var(--brand-glow)",
+      "--shadow-glow-lg":          "0 0 80px var(--brand-glow-strong)"
+    },
+
+    "new_keyframes": {
+      "_append_at_bottom_of_globals_css": true,
+      "orb-pulse": "@keyframes orb-pulse { 0%,100% { transform:scale(1); opacity:0.85; } 50% { transform:scale(1.07); opacity:1; } }",
+      "orb-drift": "@keyframes orb-drift { 0%,100% { transform:translateY(0px); } 50% { transform:translateY(-14px); } }",
+      "marquee-scroll": "@keyframes marquee-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }",
+      "pulse-dot": "@keyframes pulse-dot { 0%,100% { opacity:1; box-shadow:0 0 0 0 var(--brand-glow-strong); } 50% { opacity:0.6; box-shadow:0 0 0 6px transparent; } }",
+      "fade-up": "@keyframes fade-up { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }",
+      "shimmer": "@keyframes shimmer { from { background-position:-200% center; } to { background-position:200% center; } }",
+      "scan-line": "@keyframes scan-line { 0% { transform:translateY(-100%); opacity:0; } 20%,80% { opacity:1; } 100% { transform:translateY(400%); opacity:0; } }",
+      "border-glow-rotate": "@keyframes border-glow-rotate { from { --angle:0deg; } to { --angle:360deg; } }",
+      "register_angle_property": "@property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }"
+    }
+  },
+
+  "design_tokens": {
+    "_note": "Use these values consistently. They reference existing globals.css vars + the new additive vars above.",
+
+    "gradient_text_value": "linear-gradient(90deg, var(--primary) 0%, #ff4d1a 55%, #ff8c42 100%)",
+    "gradient_button_bg":  "linear-gradient(135deg, var(--primary) 0%, #ff4d1a 100%)",
+    "card_border_radius":  "calc(var(--radius) * 3.5)",
+    "card_large_radius":   "calc(var(--radius) * 5)",
+    "card_base_bg":        "var(--surface-card)",
+    "card_border":         "1px solid var(--border)",
+    "card_hover_border":   "color-mix(in srgb, var(--primary) 35%, transparent)",
+    "glass_bg":            "color-mix(in srgb, var(--surface-card) 80%, transparent)",
+    "glass_backdrop":      "backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px)",
+    "section_max_width":   "max-w-[1200px] mx-auto",
+    "inner_mockup_bg":     "var(--surface-sunken)",
+    "inner_mockup_border": "1px solid color-mix(in srgb, var(--border) 50%, transparent)",
+    "inner_mockup_radius": "calc(var(--radius) * 2)"
+  },
+
+  "ambient_orb_component": {
+    "file": "components/ui/ambient-orb.tsx",
+    "type": "Server Component (pure CSS — no hooks needed)",
+    "description": "The single most important visual element in this design. A floating layered CSS orb with crimson core bleeding outward through purple into dark navy. Appears in 4 places: Hero (behind mockup cards), Features (centered between columns), Professionals (behind device mockup), CTA Banner. NO canvas, NO Three.js — pure CSS radial-gradients with blur filters.",
+    "implementation": {
+      "structure": "A div container with 4 absolutely-stacked child divs, each a circle with a radial-gradient and blur filter",
+      "layer_1_core": "width:120px; height:120px; border-radius:50%; background:radial-gradient(circle, rgba(255,50,80,0.95) 0%, rgba(199,0,54,0.75) 40%, transparent 70%); filter:blur(3px); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%)",
+      "layer_2_bloom": "width:300px; height:300px; border-radius:50%; background:radial-gradient(circle, rgba(199,0,54,0.55) 0%, rgba(140,0,100,0.30) 45%, transparent 70%); filter:blur(24px); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%)",
+      "layer_3_halo": "width:500px; height:500px; border-radius:50%; background:radial-gradient(circle, rgba(100,0,130,0.30) 0%, rgba(60,10,140,0.18) 50%, transparent 70%); filter:blur(48px); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%)",
+      "layer_4_atmosphere": "width:740px; height:740px; border-radius:50%; background:radial-gradient(circle, rgba(40,10,100,0.20) 0%, rgba(20,5,60,0.08) 60%, transparent 100%); filter:blur(72px); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%)",
+      "container": "position:absolute; pointer-events:none; z-index:0; animation: orb-drift 6s ease-in-out infinite, orb-pulse 4s ease-in-out infinite"
+    },
+    "props": {
+      "size": "'sm'|'md'|'lg'|'xl' — scales all 4 layers proportionally. Multipliers: sm=0.35, md=0.6, lg=0.85, xl=1.15",
+      "intensity": "'soft'|'medium'|'strong' — multiplies opacity of layers 2-4. Values: soft=0.5, medium=0.75, strong=1.0",
+      "className": "string — for positioning (e.g. 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2')"
+    }
+  },
+
+  "page_layout_guide": {
+    "_note": "EXACT section sequence. Implement in this order in app/page.tsx. Each section is a named Server Component exported from a file in components/ui/ (or inline in page.tsx if small).",
+
+    "S1_NAVBAR": {
+      "order": 1,
+      "file": "components/ui/navbar.tsx",
+      "use_client": true,
+      "height": "56px",
+      "position": "fixed top-0 left-0 right-0 z-50",
+      "background": "color-mix(in srgb, var(--background) 80%, transparent)",
+      "backdrop": "backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px)",
+      "border": "border-bottom: 1px solid var(--border)",
+      "inner_layout": "flex items-center justify-between px-[var(--section-px)] h-14",
+      "left_logo": {
+        "text": "Second Brain",
+        "style": "font-weight:800; font-size:1.1rem; apply GradientText component — crimson→orange gradient"
+      },
+      "center_links": {
+        "items": ["Home", "Features", "Learning center", "Pricing", "Resources"],
+        "component": "shadcn NavigationMenu",
+        "style": "font-size:0.875rem; color:var(--muted-foreground); hover:var(--foreground); hidden below lg breakpoint"
+      },
+      "right_actions": {
+        "login_btn": "shadcn Button variant='ghost' size='sm' — 'Login'",
+        "cta_btn": "shadcn Button size='sm' — 'Get Early Access' — gradient bg + 100px radius + glow shadow"
+      },
+      "mobile": "NavigationMenu and right actions collapse into shadcn Sheet (slide from right) triggered by lucide-react Menu icon",
+      "entrance_animation": "motion.nav: initial:{y:-24,opacity:0} animate:{y:0,opacity:1} transition:{duration:0.6,ease:'easeOut'}"
+    },
+
+    "S2_HERO": {
+      "order": 2,
+      "file": "components/ui/hero-section.tsx",
+      "use_client": false,
+      "layout": "min-h-svh flex flex-col items-center justify-center text-center pt-14 pb-0 relative overflow-hidden",
+      "background_layers_bottom_to_top": [
+        "BG-0: var(--background) solid base — from globals.css",
+        "BG-1: Neural grid lines — absolute inset-0 z-0 pointer-events-none; background-image:linear-gradient(var(--neural-grid) 1px,transparent 1px),linear-gradient(90deg,var(--neural-grid) 1px,transparent 1px); background-size:72px 72px; mask-image:radial-gradient(ellipse 80% 70% at 50% 50%,black 20%,transparent 100%)",
+        "BG-2: AmbientOrb size='xl' intensity='strong' — absolute top-[42%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-[1] — the big glowing orb BEHIND the hero cards",
+        "BG-3: Text content + hero cards — relative z-[10]"
+      ],
+      "content_blocks": {
+        "block_1_badge": {
+          "component": "AmbientBadge",
+          "text": "AMBIENT AI · ALWAYS ON · ZERO EFFORT",
+          "margin_bottom": "mb-6",
+          "motion": "fadeUp delay:0.1s"
+        },
+        "block_2_headline": {
+          "text_line_1": "All-in-one",
+          "text_line_2_gradient": "AI assistant",
+          "text_line_3": "personalized, fast and free.",
+          "implementation": "h1 with inline GradientText span wrapping 'AI assistant'",
+          "classes": "text-[clamp(2.8rem,6.5vw,5.5rem)] font-extrabold leading-[1.08] tracking-[-0.03em] text-foreground max-w-[820px] mx-auto",
+          "motion": "fadeUp delay:0.25s"
+        },
+        "block_3_subtext": {
+          "text": "Second Brain listens, understands, and acts — converting your everyday conversations into scheduled tasks, automated workflows, and intelligent decisions.",
+          "classes": "text-base text-muted-foreground max-w-[520px] mx-auto mt-5",
+          "motion": "fadeUp delay:0.4s"
+        },
+        "block_4_cta_row": {
+          "layout": "flex gap-3 justify-center flex-wrap mt-6",
+          "primary_btn": "Add to Chrome — It's free (primary gradient pill, glow shadow)",
+          "secondary_btn": "Desktop & mobile app (ghost outline pill)",
+          "motion": "fadeUp delay:0.55s"
+        },
+        "block_5_integrations": {
+          "layout": "flex items-center gap-x-6 gap-y-2 justify-center flex-wrap mt-10 mb-8",
+          "prefix_label": { "text": "Upcoming:", "classes": "text-xs text-muted-foreground mr-2" },
+          "logos": ["Upwork", "DevSign", "Slack", "Figma+", "ATLASSIAN", "Square", "Squarespace"],
+          "logo_classes": "text-sm font-semibold text-muted-foreground/50 hover:text-muted-foreground/80 transition-colors cursor-default select-none tracking-wide",
+          "separator_dots": "mx-1 text-border",
+          "motion": "fadeUp delay:0.7s"
+        },
+        "block_6_hero_mockup": {
+          "layout": "relative w-full max-w-[920px] mx-auto grid grid-cols-2 gap-5 items-center mt-2",
+          "description": "Two floating dark glass UI cards side-by-side. The AmbientOrb sits between and behind them — it is already rendered in BG-2 and bleeds through both cards.",
+          "left_card": {
+            "classes": "relative z-[2] h-[280px]",
+            "content_type": "FeatureCard variant='mockup'",
+            "mockup_interior": "Simulated AI settings panel: dark sidebar with items 'Passwords', 'Regular notes'; toggle switches; label 'What would you like me to help?'",
+            "card_style": "rounded-[calc(var(--radius)*4)] border border-border bg-surface-card overflow-hidden p-4"
+          },
+          "right_card": {
+            "classes": "relative z-[2] h-[210px] self-center",
+            "content_type": "FeatureCard variant='mockup'",
+            "mockup_interior": "AI chat bar: dark rounded input 'Ask me anything, press / for page' with send icon; bottom toolbar row with icons for attach, voice, settings",
+            "card_style": "rounded-[calc(var(--radius)*4)] border border-border bg-surface-card overflow-hidden p-4"
+          },
+          "bottom_tag": "absolute bottom-3 right-3 z-[12]; shadcn Badge variant='outline'; text:'Desktop & mobile app'; border-radius:100px; font-size:0.7rem",
+          "motion": "initial:{opacity:0,y:40} animate:{opacity:1,y:0} delay:0.85s duration:1s"
+        }
+      }
+    },
+
+    "S3_FEATURES": {
+      "order": 3,
+      "file": "components/ui/features-section.tsx",
+      "layout": "py-[var(--section-py)] px-[var(--section-px)] max-w-[1200px] mx-auto relative",
+      "section_header": {
+        "layout": "flex justify-between items-end mb-12 gap-6 flex-wrap",
+        "left_block": {
+          "title": "AI assistant",
+          "gradient_word": "AI",
+          "title_classes": "text-[clamp(2.5rem,4.5vw,4rem)] font-extrabold tracking-[-0.025em] leading-[1.1] text-left"
+        },
+        "right_block": {
+          "description": "Define no-code credit-based smart links, and add you can continue your knowledge alignment meet.",
+          "cta_text": "Go to pricing →",
+          "classes": "max-w-[260px] text-right text-sm text-muted-foreground self-end"
+        }
+      },
+      "orb_behind_grid": {
+        "component": "AmbientOrb",
+        "props": "size='lg' intensity='medium'",
+        "position": "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
+      },
+      "cards_grid": {
+        "layout": "grid grid-cols-3 gap-3 relative z-[1]",
+        "row_1": {
+          "col_1": {
+            "id": "ai-chat",
+            "span": "row-span-2",
+            "height": "h-full min-h-[360px]",
+            "tag": "GPT-4",
+            "title": "AI chat",
+            "subtitle": "Communicate with any AI model",
+            "mockup": "Dark chat interface: model selector dropdown 'GPT-4' at top, message thread area, input bar 'Ask me anything, press / for page', send button"
+          },
+          "col_2": {
+            "id": "ai-summary",
+            "title": "AI Summary",
+            "subtitle": "Summarize text in writing or any notes app",
+            "mockup": "Dark compact card with text summary output and source label"
+          },
+          "col_3": {
+            "id": "what-is-logo",
+            "title": "What is logo",
+            "subtitle": "Instant answer panel for quick context",
+            "mockup": "Dark mini card with answer text and source link"
+          }
+        },
+        "row_2": {
+          "col_1": "already occupied by ai-chat row-span-2",
+          "col_2": {
+            "id": "ai-floating",
+            "title": "AI chat",
+            "subtitle": "Floating widget — available anywhere",
+            "mockup": "Centered floating red orb button with glow ring — mimics the ambient orb visually at small scale"
+          },
+          "col_3": {
+            "id": "ai-search",
+            "title": "AI Search",
+            "subtitle": "Supercharge your search engine with deep knowledge",
+            "mockup": "Search bar with AI results and source chips"
+          }
+        },
+        "card_base_classes": "bg-surface-card border border-border rounded-[calc(var(--radius)*3.5)] overflow-hidden p-4 flex flex-col gap-3 hover:border-[color-mix(in_srgb,var(--primary)_30%,transparent)] transition-all duration-300 hover:-translate-y-1"
+      },
+      "pagination_row": {
+        "layout": "flex justify-center gap-1.5 mt-6",
+        "dots": "2 dots — first filled (primary color, 24px wide pill), second empty (border circle 8px)"
+      }
+    },
+
+    "S4_WORKS_WHERE": {
+      "order": 4,
+      "file": "components/ui/works-where-section.tsx",
+      "layout": "py-[var(--section-py)] px-[var(--section-px)] relative overflow-hidden bg-[var(--surface-raised)]",
+      "header": {
+        "layout": "text-center mb-12 relative z-[1]",
+        "title": "Works where you work.",
+        "gradient_word": "Works",
+        "title_classes": "text-[clamp(2.2rem,4.5vw,3.8rem)] font-extrabold tracking-[-0.025em] leading-[1.1]",
+        "subtitle": "Gather notes centrally from all media, and you have full context to your knowledge meet.",
+        "subtitle_classes": "text-muted-foreground text-base mt-3 max-w-[480px] mx-auto"
+      },
+      "orb_behind_grid": "AmbientOrb size='lg' intensity='soft' absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0",
+      "cards_grid": {
+        "layout": "grid grid-cols-3 gap-3 max-w-[1100px] mx-auto relative z-[1]",
+        "all_cards_base": "bg-surface-card border border-border rounded-[calc(var(--radius)*3.5)] overflow-hidden hover:border-[color-mix(in_srgb,var(--primary)_30%,transparent)] transition-all duration-300 hover:-translate-y-1",
+        "card_structure": "Each card: top area = dark mockup/visual (min-h-[160px] bg-surface-sunken rounded-[calc(var(--radius)*2)] m-3), bottom area = p-4 title + subtitle text",
+        "cards": [
+          {
+            "id": "ai-sidebar",
+            "title": "AI sidebar",
+            "subtitle": "Compatible with all websites and capable of actions on every page",
+            "mockup": "Browser sidebar UI with chat panel, dark background, status bar"
+          },
+          {
+            "id": "all-platforms",
+            "title": "Available on all platforms",
+            "subtitle": "Use our AI on any device or platform",
+            "mockup": "Centered Apple logo and Windows logo with AmbientOrb size='sm' intensity='medium' glowing between them — pure CSS orb as the visual"
+          },
+          {
+            "id": "windows-app",
+            "title": "Windows app",
+            "subtitle": "Native desktop experience for Windows users",
+            "mockup": "Windows app screenshot in dark frame"
+          },
+          {
+            "id": "smart-toolbar",
+            "title": "Smart toolbar",
+            "subtitle": "Context-aware quick-action bar for power users",
+            "mockup": "Horizontal toolbar strip with icon buttons and active state"
+          },
+          {
+            "id": "writing-assistant",
+            "title": "Writing assistant",
+            "subtitle": "Enhance your writing with AI suggestions inline",
+            "mockup": "Text editor card with highlighted suggestion text overlay"
+          },
+          {
+            "id": "web-enhancement",
+            "title": "Web enhancement",
+            "subtitle": "Supercharge any website with AI-powered tools",
+            "mockup": "Browser tab with floating AI panel overlay"
+          }
+        ]
+      }
+    },
+
+    "S5_SOCIAL_PROOF": {
+      "order": 5,
+      "file": "components/ui/social-proof-section.tsx",
+      "layout": "py-[var(--section-py)] px-[var(--section-px)] max-w-[1200px] mx-auto",
+      "header": {
+        "title": "Trusted by 10 million\nusers worldwide.",
+        "gradient_word": "10 million",
+        "title_classes": "text-[clamp(2.2rem,4.5vw,3.8rem)] font-extrabold tracking-[-0.025em] leading-[1.1] text-left",
+        "layout": "text-left mb-10"
+      },
+      "cards_grid": {
+        "layout": "grid grid-cols-2 gap-5 md:grid-cols-1",
+        "card_base": "bg-surface-card border border-border rounded-[calc(var(--radius)*3.5)] p-8",
+        "card_hover": "hover:border-[color-mix(in_srgb,var(--primary)_30%,transparent)] transition-all duration-300",
+        "card_content": {
+          "rating_row": "flex items-center gap-2 mb-4; '5.0' in font-weight:700; '★★★★★' in color:var(--primary); font-size:0.85rem",
+          "quote": "text-base leading-[1.8] text-foreground mb-6 italic",
+          "author_row": "flex items-center gap-3; shadcn Avatar 36px with AvatarFallback and gradient background; name in font-weight:700 text-sm; role in text-xs text-muted-foreground"
+        }
+      },
+      "below_grid": {
+        "layout": "flex justify-center mt-8",
+        "item": "Single 8px circle dot in var(--primary) — pagination indicator"
+      }
+    },
+
+    "S6_PROFESSIONALS": {
+      "order": 6,
+      "file": "components/ui/professionals-section.tsx",
+      "use_client": true,
+      "layout": "py-[var(--section-py)] px-[var(--section-px)] text-center relative overflow-hidden bg-[var(--surface-raised)]",
+      "header": {
+        "title": "Built for Professionals.",
+        "gradient_word": "Professionals",
+        "title_classes": "text-[clamp(2.2rem,4.5vw,3.8rem)] font-extrabold tracking-[-0.025em] leading-[1.1] text-center"
+      },
+      "platform_tabs": {
+        "layout": "flex gap-2 justify-center flex-wrap mt-5 mb-10",
+        "component": "PlatformTabGroup (local useState for active tab)",
+        "tabs": [
+          { "label": "Extension", "icon": "puzzle-piece" },
+          { "label": "Android", "icon": "smartphone", "defaultActive": true },
+          { "label": "Download", "icon": "download" },
+          { "label": "Document", "icon": "file-text" },
+          { "label": "iPad App", "icon": "tablet" }
+        ],
+        "tab_default_classes": "flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-border bg-surface-card text-xs text-muted-foreground cursor-pointer hover:border-primary/40 transition-all",
+        "tab_active_classes": "border-primary text-foreground bg-[color-mix(in_srgb,var(--primary)_12%,var(--surface-card))]"
+      },
+      "central_device_mockup": {
+        "layout": "relative max-w-[560px] mx-auto",
+        "orb_behind": "AmbientOrb size='xl' intensity='medium' absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0",
+        "device_card": {
+          "classes": "relative z-[1] bg-surface-card border border-border rounded-[calc(var(--radius)*6)] p-6 shadow-[0_40px_80px_rgba(0,0,0,0.65),0_0_60px_var(--brand-glow)]",
+          "content": "Shows Second Brain app UI — top bar with logo and menu icon; main area with chat interface and a centered glowing red orb button (AmbientOrb size='sm' intensity='strong' within the mockup); bottom quick-action bar",
+          "inner_orb": "AmbientOrb size='sm' intensity='strong' centered inside the card — this makes the card look 3D with internal light source"
+        }
+      },
+      "feature_bullets": {
+        "layout": "grid grid-cols-3 gap-8 max-w-[900px] mx-auto mt-12 text-left",
+        "item_structure": "No card bg. Icon circle (36px, bg:color-mix(in srgb,var(--primary) 12%,transparent), border:1px solid color-mix(in srgb,var(--primary) 20%,transparent), border-radius:50%) + title (font-weight:700 text-sm mt-3 mb-1) + body (text-xs text-muted-foreground leading-relaxed)",
+        "items": [
+          { "icon": "search", "title": "Research intelligence suite", "body": "Web search, summarize, and knowledge base — all connected in real time." },
+          { "icon": "file-text", "title": "Helpful report generator", "body": "Auto-generate structured reports from meeting transcripts and conversations." },
+          { "icon": "bar-chart-2", "title": "Data analysis accelerator", "body": "Interrogate data sources and spreadsheets with natural language queries." }
+        ]
+      }
+    },
+
+    "S7_FAQ": {
+      "order": 7,
+      "file": "components/ui/faq-section.tsx",
+      "use_client": true,
+      "layout": "py-[var(--section-py)] px-[var(--section-px)] max-w-[760px] mx-auto text-center",
+      "header": {
+        "title": "Frequently asked\nquestions",
+        "gradient_word": "questions",
+        "title_classes": "text-[clamp(2rem,4vw,3.5rem)] font-extrabold tracking-[-0.025em] leading-[1.1] mb-10"
+      },
+      "accordion": {
+        "component": "shadcn Accordion type='single' collapsible",
+        "item_wrapper_classes": "mb-2 bg-surface-card border border-border rounded-[calc(var(--radius)*2.5)] overflow-hidden px-5 data-[state=open]:border-[color-mix(in_srgb,var(--primary)_30%,transparent)]",
+        "trigger_classes": "text-sm font-semibold text-foreground text-left py-4 hover:text-primary transition-colors w-full flex justify-between items-center",
+        "content_classes": "text-sm text-muted-foreground leading-[1.75] pb-4 text-left",
+        "chevron": "lucide-react ChevronDown — rotates 180deg when open via data-[state=open]:rotate-180 transition-transform"
+      },
+      "items": [
+        {
+          "q": "What is Second Brain?",
+          "a": "Second Brain is an ambient AI assistant that continuously listens via Bluetooth or microphone, processes your conversations in real-time, and autonomously creates schedules, sends emails, books appointments, and performs web tasks on your behalf."
+        },
+        {
+          "q": "How does Second Brain work?",
+          "a": "Second Brain uses on-device speech recognition to capture ambient audio, a fine-tuned LLM extracts intent and action items, then specialized AI agents execute tasks — from booking to emailing to web research — silently and securely. Your raw audio never leaves your device.",
+          "default_open": true
+        },
+        {
+          "q": "Is Second Brain free?",
+          "a": "Second Brain offers a free tier with core features. Pro and Team plans unlock unlimited agent actions, priority processing, advanced integrations, and dedicated Bluetooth device pairing."
+        },
+        {
+          "q": "How does Second Brain protect my privacy?",
+          "a": "All speech-to-text processing happens on-device using local ASR models. Only semantic intent embeddings are ever transmitted — never raw audio or transcripts. All data is end-to-end encrypted at rest and in transit."
+        }
+      ]
+    },
+
+    "S8_CTA_BANNER": {
+      "order": 8,
+      "file": "components/ui/cta-banner-section.tsx",
+      "layout": "py-[var(--section-py)] px-[var(--section-px)] flex justify-center",
+      "outer_wrapper": {
+        "classes": "relative w-full max-w-[1000px] rounded-[calc(var(--radius)*6)] p-[2px] overflow-hidden",
+        "rotating_border": {
+          "technique": "::before pseudo-element with conic-gradient + @property --angle + border-glow-rotate animation",
+          "css": "content:''; position:absolute; inset:0; border-radius:inherit; background:conic-gradient(from var(--angle),transparent 0%,var(--primary) 25%,#ff4d1a 45%,transparent 65%); animation:border-glow-rotate 4s linear infinite; z-index:0",
+          "note": "Register --angle with @property for smooth animation. See additive_css.new_keyframes.register_angle_property"
+        }
+      },
+      "inner_card": {
+        "classes": "relative z-[1] bg-surface-card rounded-[calc(var(--radius)*6-2px)] px-12 py-16 text-center overflow-hidden",
+        "orb_inside": "AmbientOrb size='lg' intensity='soft' absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0",
+        "content": {
+          "title": "Unleash your true\npotential, get Second Brain now!",
+          "gradient_words": "Second Brain",
+          "title_classes": "relative z-[1] text-[clamp(2rem,4vw,3.5rem)] font-extrabold tracking-[-0.02em] leading-[1.15] text-foreground",
+          "button_row": "relative z-[1] flex gap-3 justify-center flex-wrap mt-8",
+          "btn_primary": "Add to Chrome — It's free (gradient pill + glow)",
+          "btn_secondary": "Desktop & mobile app (ghost outline pill)"
+        },
+        "bottom_mockup_peek": {
+          "description": "A partial dark app card that peeks up from the bottom edge of the banner — gives a 3D product-emerging effect matching the inspiration",
+          "classes": "absolute bottom-0 left-1/2 -translate-x-1/2 w-[260px] h-[100px] bg-surface-sunken border border-border border-b-0 rounded-t-[calc(var(--radius)*3)] z-[2] overflow-hidden",
+          "content": "Simplified app header bar: logo icon + 'Second Brain' text + avatar. Just the top portion of the UI."
+        }
+      }
+    },
+
+    "S9_FOOTER": {
+      "order": 9,
+      "file": "components/ui/footer.tsx",
+      "layout": "border-t border-border pt-16 pb-8 px-[var(--section-px)]",
+      "inner": "max-w-[1200px] mx-auto",
+      "columns_grid": "grid grid-cols-5 gap-8 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1",
+      "col_1_brand": {
+        "width": "col-span-1 lg:col-span-3 md:col-span-2",
+        "logo": "Second Brain — GradientText, font-weight:800, font-size:1.1rem",
+        "tagline": "Add your relations with our single origin platform — text-xs text-muted-foreground mt-2 max-w-[220px]",
+        "social_icons": {
+          "layout": "flex gap-2 mt-4",
+          "icons": ["Twitter/X", "LinkedIn", "GitHub", "Discord"],
+          "icon_wrapper": "w-8 h-8 rounded-full border border-border flex items-center justify-center hover:border-primary/50 hover:bg-[color-mix(in_srgb,var(--primary)_8%,transparent)] transition-all cursor-pointer",
+          "icon_size": "14px lucide-react icons"
+        }
+      },
+      "col_2_ai_models": {
+        "header": "AI Models",
+        "links": ["Integration tools", "AI Chat", "AI Search", "AI Summary", "Learn More"]
+      },
+      "col_3_image_tools": {
+        "header": "Image Tools",
+        "links": ["AI Image Gen", "AI Background", "AI Enhancer", "Learn More"]
+      },
+      "col_4_learn": {
+        "header": "Learn From",
+        "links": ["Blog", "Documentation", "Tutorials", "API Reference", "Changelog", "Roadmap"]
+      },
+      "col_5_about": {
+        "header": "About",
+        "links": ["Company", "Careers", "Press Kit", "Privacy Policy", "Terms of Service"]
+      },
+      "column_header_classes": "text-xs font-bold text-foreground tracking-[0.06em] uppercase mb-3",
+      "link_classes": "block text-xs text-muted-foreground hover:text-foreground transition-colors mb-2",
+      "bottom_bar": {
+        "layout": "flex justify-between items-center mt-12 pt-6 border-t border-border",
+        "left": "© 2025 Second Brain Inc. All rights reserved.",
+        "right": "X (Twitter) icon link — lucide-react Twitter icon",
+        "classes": "text-xs text-muted-foreground"
+      }
+    }
+  },
+
+  "ui_component_implementations": {
+
+    "GradientText": {
+      "file": "components/ui/gradient-text.tsx",
+      "type": "Server Component",
+      "code_pattern": "export function GradientText({ children, className }: { children: React.ReactNode; className?: string }) { return <span className={cn('bg-gradient-to-r from-primary via-[#ff4d1a] to-[#ff8c42] bg-clip-text text-transparent', className)}>{children}</span> }",
+      "usage": "<h1>All-in-one <GradientText>AI assistant</GradientText><br/>personalized, fast and free.</h1>"
+    },
+
+    "AmbientBadge": {
+      "file": "components/ui/ambient-badge.tsx",
+      "type": "Server Component",
+      "visual": "Pill container: bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] border border-[color-mix(in_srgb,var(--primary)_25%,transparent)] rounded-full px-3 py-1 inline-flex items-center gap-2 text-[0.68rem] tracking-[0.1em] uppercase text-foreground",
+      "dot": "w-1.5 h-1.5 rounded-full bg-primary animate-[pulse-dot_2s_ease-in-out_infinite]",
+      "props": "{ children: ReactNode; showDot?: boolean }"
+    },
+
+    "SectionLabel": {
+      "file": "components/ui/section-label.tsx",
+      "type": "Server Component",
+      "classes": "text-[0.68rem] font-semibold text-primary tracking-[0.14em] uppercase"
+    },
+
+    "MarqueeTrack": {
+      "file": "components/ui/marquee-track.tsx",
+      "use_client": true,
+      "structure": {
+        "wrapper": "w-full overflow-hidden border-t border-b border-border py-3 bg-[color-mix(in_srgb,var(--primary)_2%,transparent)] group",
+        "inner": "flex w-max animate-[marquee-scroll_var(--marquee-duration)_linear_infinite] group-hover:[animation-play-state:paused]",
+        "item": "flex items-center gap-2 mx-14 text-xs font-semibold text-muted-foreground/60 tracking-[0.06em] uppercase whitespace-nowrap"
+      },
+      "items_content": [
+        "🎙 AMBIENT LISTENING", "🧠 AI MEMORY", "📅 AUTO SCHEDULING",
+        "🤖 MULTI-AGENT", "🌐 WEB AUTOMATION", "🔗 BLUETOOTH MESH",
+        "⚡ REAL-TIME PROCESSING", "🔒 ON-DEVICE PRIVACY"
+      ],
+      "duplication": "Render items array twice in DOM for seamless loop"
+    },
+
+    "CursorDot": {
+      "file": "components/ui/cursor-dot.tsx",
+      "use_client": true,
+      "mount": "Render in app/layout.tsx inside RootLayout body, after children",
+      "dot": "fixed w-2.5 h-2.5 rounded-full bg-primary pointer-events-none z-[9999] mix-blend-screen transition-[width,height] duration-150",
+      "ring": "fixed w-8 h-8 rounded-full border border-primary/45 pointer-events-none z-[9998] transition-transform duration-100",
+      "implementation": "useEffect with mousemove → update CSS custom props --cx --cy; style={{left:'var(--cx)',top:'var(--cy)',transform:'translate(-50%,-50)'}}",
+      "hover_expand": "add/remove classes via mouseenter/mouseleave on interactive elements — dot:w-4 h-4, ring:w-12 h-12",
+      "touch_hide": "hidden on pointer:coarse devices — add className='pointer-fine:block hidden'"
+    }
+  },
+
+  "motion_variants_file": {
+    "file": "lib/motion-variants.ts",
+    "exports": {
+      "fadeUp": "{ hidden:{opacity:0,y:24}, visible:{opacity:1,y:0,transition:{duration:0.72,ease:[0.22,1,0.36,1]}} }",
+      "fadeIn": "{ hidden:{opacity:0}, visible:{opacity:1,transition:{duration:0.55,ease:'easeOut'}} }",
+      "staggerContainer": "{ hidden:{}, visible:{transition:{staggerChildren:0.1,delayChildren:0.05}} }",
+      "heroEntrance": {
+        "badge":    "initial:{opacity:0,y:20,scale:0.95} animate:{opacity:1,y:0,scale:1} transition:{duration:0.6,delay:0.1}",
+        "headline": "initial:{opacity:0,y:32} animate:{opacity:1,y:0} transition:{duration:0.85,delay:0.25,ease:[0.22,1,0.36,1]}",
+        "subtext":  "initial:{opacity:0,y:20} animate:{opacity:1,y:0} transition:{duration:0.7,delay:0.4}",
+        "buttons":  "initial:{opacity:0,y:16} animate:{opacity:1,y:0} transition:{duration:0.6,delay:0.55}",
+        "logos":    "initial:{opacity:0,y:12} animate:{opacity:1,y:0} transition:{duration:0.6,delay:0.7}",
+        "mockup":   "initial:{opacity:0,y:44} animate:{opacity:1,y:0} transition:{duration:1.0,delay:0.85,ease:[0.22,1,0.36,1]}"
+      },
+      "cardHoverSpring": "whileHover:{y:-4} transition:{type:'spring',stiffness:280,damping:22}",
+      "buttonPress": "whileTap:{scale:0.97} transition:{type:'spring',stiffness:400,damping:20}"
+    },
+    "scroll_reveal_hook_usage": "import { useInView } from 'motion/react'; const ref = useRef(null); const inView = useInView(ref, { once: true, margin: '-72px 0px' }); <motion.div ref={ref} variants={staggerContainer} initial='hidden' animate={inView ? 'visible' : 'hidden'}>",
+    "reduced_motion": "import { useReducedMotion } from 'motion/react'; if (prefersReducedMotion) skip transform variants, keep opacity only"
+  },
+
+  "page_data_file": {
+    "file": "lib/page-data.ts",
+    "exports": {
+      "NAV_LINKS": ["Home", "Features", "Learning center", "Pricing", "Resources"],
+      "INTEGRATION_LOGOS": ["Upwork", "DevSign", "Slack", "Figma+", "ATLASSIAN", "Square", "Squarespace"],
+      "FEATURE_CARDS": "array — see S3_FEATURES cards",
+      "PLATFORM_CARDS": "array — see S4_WORKS_WHERE cards",
+      "PLATFORM_TABS": ["Extension", "Android", "Download", "Document", "iPad App"],
+      "PROF_BULLETS": "3 items — see S6_PROFESSIONALS feature_bullets",
+      "TESTIMONIALS": "2 items — see S5_SOCIAL_PROOF",
+      "FAQ_ITEMS": "4 items — see S7_FAQ items",
+      "FOOTER_COLUMNS": "5 columns — see S9_FOOTER",
+      "AGENTS": "8 agent objects with name/role/status/gradient — for future agents section"
+    }
+  },
+
+  "layout_tsx_spec": {
+    "file": "app/layout.tsx",
+    "structure": [
+      "import type { Metadata } from 'next'",
+      "import { GeistMono } from 'geist/font/mono' — or however Geist Mono is configured",
+      "import './globals.css'",
+      "import { ThemeProvider } from '@/components/theme-provider' — already exists",
+      "import Navbar from '@/components/ui/navbar'",
+      "import { CursorDot } from '@/components/ui/cursor-dot'",
+      "export const metadata: Metadata = { ... see seo_metadata block ... }",
+      "export default function RootLayout({ children }) {",
+      "  return (",
+      "    <html lang='en' className='dark' suppressHydrationWarning>",
+      "      <body className={`${geistMono.variable} font-sans antialiased bg-background text-foreground`}>",
+      "        <ThemeProvider attribute='class' defaultTheme='dark' enableSystem={false} disableTransitionOnChange>",
+      "          <Navbar />",
+      "          <CursorDot />",
+      "          {children}",
+      "        </ThemeProvider>",
+      "      </body>",
+      "    </html>",
+      "  )",
+      "}"
+    ]
+  },
+
+  "page_tsx_spec": {
+    "file": "app/page.tsx",
+    "type": "Server Component — no 'use client'",
+    "structure": [
+      "import HeroSection from '@/components/ui/hero-section'",
+      "import { MarqueeTrack } from '@/components/ui/marquee-track'",
+      "import FeaturesSection from '@/components/ui/features-section'",
+      "import WorksWhereSection from '@/components/ui/works-where-section'",
+      "import SocialProofSection from '@/components/ui/social-proof-section'",
+      "import ProfessionalsSection from '@/components/ui/professionals-section'",
+      "import FaqSection from '@/components/ui/faq-section'",
+      "import CtaBannerSection from '@/components/ui/cta-banner-section'",
+      "import Footer from '@/components/ui/footer'",
+      "import { INTEGRATION_LOGOS } from '@/lib/page-data'",
+      "",
+      "export default function Home() {",
+      "  return (",
+      "    <main className='relative overflow-x-hidden bg-background'>",
+      "      <HeroSection />",
+      "      <MarqueeTrack />",
+      "      <FeaturesSection />",
+      "      <WorksWhereSection />",
+      "      <SocialProofSection />",
+      "      <ProfessionalsSection />",
+      "      <FaqSection />",
+      "      <CtaBannerSection />",
+      "      <Footer />",
+      "    </main>",
+      "  )",
+      "}"
+    ]
+  },
+
+  "seo_metadata": {
+    "title": "Second Brain — Your Ambient AI Consciousness",
+    "description": "Second Brain listens to your conversations, understands your intent, and acts — scheduling, emailing, browsing, and managing your life through a fleet of specialized AI agents.",
+    "openGraph": {
+      "title": "Second Brain — Your Ambient AI Consciousness",
+      "description": "The AI that thinks with you, not for you.",
+      "images": [{ "url": "/og-second-brain.png", "width": 1200, "height": 630 }],
+      "type": "website"
+    },
+    "twitter": { "card": "summary_large_image" }
+  },
+
+  "performance_and_build": {
+    "dynamic_imports_with_ssr_false": [
+      "CursorDot — always ssr:false",
+      "AmbientOrb — ssr:false only if you add JS interactivity; pure CSS version can be SSR"
+    ],
+    "client_components": [
+      "components/ui/navbar.tsx — Sheet state",
+      "components/ui/marquee-track.tsx — hover-pause",
+      "components/ui/cursor-dot.tsx — mouse tracking",
+      "components/ui/professionals-section.tsx — tab state",
+      "components/ui/faq-section.tsx — accordion",
+      "Any component using motion whileHover/whileTap (wrap with 'use client')"
+    ],
+    "server_components": [
+      "app/page.tsx",
+      "components/ui/hero-section.tsx",
+      "components/ui/features-section.tsx",
+      "components/ui/works-where-section.tsx",
+      "components/ui/social-proof-section.tsx",
+      "components/ui/cta-banner-section.tsx",
+      "components/ui/footer.tsx",
+      "components/ui/ambient-orb.tsx",
+      "components/ui/gradient-text.tsx",
+      "components/ui/ambient-badge.tsx",
+      "components/ui/section-label.tsx",
+      "components/ui/testimonial-card.tsx",
+      "components/ui/feature-card.tsx"
+    ],
+    "no_new_dependencies": "Do NOT add Three.js, GSAP, or canvas libraries. AmbientOrb is pure CSS. All animations via motion-react (already in project) and CSS keyframes.",
+    "motion_import": "Always import from 'motion/react' — NOT 'framer-motion' — for motion-react v11+",
+    "reduced_motion": "Wrap all motion.div variants with useReducedMotion() check from 'motion/react'. If true: remove y transforms, keep only opacity transitions. Add motion-safe: prefix to CSS animation classes where possible."
+  }
+}
