@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://i.pinimg.com/control1/736x/73/e1/a4/73e1a4754baea4b4a6624dc31c62fc22.jpg" alt="Second Brain Logo" width="100%" height="100%" style="transform: rotate(-90deg);" />
+  <img src="https://res.cloudinary.com/dfjuuwtr6/image/upload/v1773415113/73e1a4754baea4b4a6624dc31c62fc22_ltm77b.jpg" alt="Second Brain Logo" width="100%" height="100%" />
 
   # Second Brain
   
