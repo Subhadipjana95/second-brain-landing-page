@@ -54,8 +54,8 @@ export default function AnimatedGenerateButton({
       >
         <svg
           className={clsx(
-            "ui-anim-btn-svg mr-2 h-6 w-6 flex-grow-0",
-            "fill-[color:var(--ui-anim-svg-fill)]",
+            "ui-anim-btn-svg mr-2 h-6 w-6 grow-0",
+            "fill-(--ui-anim-svg-fill)",
             "transition-[fill,filter,opacity] duration-400"
           )}
           xmlns="http://www.w3.org/2000/svg"
