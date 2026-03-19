@@ -5,7 +5,7 @@ import Cta from "../components/cta";
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-black text-white selection:bg-white/30">
+    <main className="min-h-screen bg-black text-white">
       <Hero />
       <Workflow />
       <Cta />

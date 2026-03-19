@@ -35,7 +35,7 @@ const hero = () => {
                     <LeftMockups />
 
                     {/* ═══ CENTER HERO CONTENT ═══ */}
-                    <div className="flex flex-col items-center pt-[100px] md:pt-[180px] pb-[102px] text-center z-20">
+                    <div className="flex flex-col items-center pt-[160px] pb-[102px] text-center z-20">
                         <div className="flex flex-col items-center gap-[30px] max-w-[680px]">
 
                             {/* Badge */}
