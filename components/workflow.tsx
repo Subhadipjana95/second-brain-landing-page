@@ -95,7 +95,7 @@ const WORKFLOW_COLUMNS = [
   ]
 ];
 
-const cardBaseClass = "rounded-[24px] bg-[rgba(20,20,22,0.6)] border border-white/5 flex flex-col relative group overflow-hidden hover:bg-[rgba(30,30,35,0.6)] transition-all duration-500";
+const cardBaseClass = "rounded-2xl bg-[rgba(20,20,22,0.6)] border border-white/5 flex flex-col relative group overflow-hidden hover:bg-[rgba(30,30,35,0.6)] transition-all duration-500";
 
 const workflow = () => {
   return (

@@ -1,5 +1,5 @@
 import Hero from "../components/hero";
-import Footer from "../components/footer";
+import Footer from "../components/common/footer";
 import Workflow from "../components/workflow";
 import Cta from "../components/cta";
 
