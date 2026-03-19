@@ -126,3 +126,47 @@
     @apply font-sans;
     }
 }
+
+@layer utilities {
+  .mockup-glow-edge {
+    --highlight: rgba(52, 143, 192, 1);
+    --highlight-50: rgba(52, 143, 192, 0.5);
+    --highlight-30: rgba(52, 143, 192, 0.3);
+    position: relative;
+    border-color: var(--highlight-30);
+  }
+
+  .mockup-glow-edge::before {
+    content: "";
+    position: absolute;
+    /* push slightly outside bounds for rim shadow */
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: -1;
+    background-image: linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+    box-shadow:
+      0 -8px 8px -6px #fffa inset,
+      0 -16px 16px -8px var(--highlight-30) inset,
+      1px 1px 1px #fff2,
+      2px 2px 2px #fff1,
+      -1px -1px 1px #0002,
+      -2px -2px 2px #0001;
+  }
+
+  .mockup-glow-edge::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image: linear-gradient(0deg, #fff, var(--highlight), var(--highlight-50), 8%, transparent);
+    background-position: 0 0;
+    opacity: 1;
+    -webkit-mask-image: linear-gradient(0deg, #fff, transparent);
+    mask-image: linear-gradient(0deg, #fff, transparent);
+  }
+}
