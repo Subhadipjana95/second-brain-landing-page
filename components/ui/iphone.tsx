@@ -2,11 +2,11 @@ import type { HTMLAttributes } from "react"
 
 const PHONE_WIDTH = 433
 const PHONE_HEIGHT = 882
-const SCREEN_X = 21.25
-const SCREEN_Y = 19.25
-const SCREEN_WIDTH = 389.5
-const SCREEN_HEIGHT = 843.5
-const SCREEN_RADIUS = 55.75
+const SCREEN_X = 11.25
+const SCREEN_Y = 11.25
+const SCREEN_WIDTH = 410.5
+const SCREEN_HEIGHT = 859.5
+const SCREEN_RADIUS = 63.75
 
 // Calculated percentages
 const LEFT_PCT = (SCREEN_X / PHONE_WIDTH) * 100
@@ -88,7 +88,7 @@ export function Iphone({
         viewBox={`0 0 ${PHONE_WIDTH} ${PHONE_HEIGHT}`}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute inset-0 size-full"
+        className="absolute inset-0 size-full pointer-events-none"
         style={{ transform: "translateZ(0)" }}
       >
         <g mask={hasMedia ? "url(#screenPunch)" : undefined}>
@@ -124,8 +124,13 @@ export function Iphone({
           className="fill-[#E5E5E5] dark:fill-[#404040]"
         />
 
-        <path
-          d={`M${SCREEN_X} 75C${SCREEN_X} 44.2101 46.2101 ${SCREEN_Y} 77 ${SCREEN_Y}H355C385.79 ${SCREEN_Y} 410.75 44.2101 410.75 75V807C410.75 837.79 385.79 862.75 355 862.75H77C46.2101 862.75 ${SCREEN_X} 837.79 ${SCREEN_X} 807V75Z`}
+        <rect
+          x={SCREEN_X}
+          y={SCREEN_Y}
+          width={SCREEN_WIDTH}
+          height={SCREEN_HEIGHT}
+          rx={SCREEN_RADIUS}
+          ry={SCREEN_RADIUS}
           className="fill-[#E5E5E5] stroke-[#E5E5E5] stroke-[0.5] dark:fill-[#404040] dark:stroke-[#404040]"
           mask={hasMedia ? "url(#screenPunch)" : undefined}
         />
