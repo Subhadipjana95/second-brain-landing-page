@@ -95,15 +95,15 @@ const WORKFLOW_COLUMNS = [
   ]
 ];
 
-const cardBaseClass = "rounded-2xl bg-[rgba(20,20,22,0.6)] border border-white/5 flex flex-col relative group overflow-hidden hover:bg-[rgba(30,30,35,0.6)] transition-all duration-500";
+const cardBaseClass = "rounded-[calc(0.45rem*3)] bg-[rgba(20,20,22,0.6)] border border-white/5 flex flex-col relative group overflow-hidden hover:bg-[rgba(30,30,35,0.6)] transition-all duration-500";
 
 const workflow = () => {
   return (
-    <section id='workflow' className="py-32 px-6 md:px-[60px] lg:px-[120px] bg-black relative max-w-[1600px] mx-auto overflow-hidden">
+    <section id='workflow' className="py-32 px-8 bg-black relative flex justify-center w-full overflow-hidden">
         {/* Subtle background linear */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[1000px] h-[500px] bg-[#348fc0]/5 blur-[120px] rounded-full pointer-events-none" />
         
-        <div className="max-w-[1200px] mx-auto relative z-10">
+        <div className="w-full max-w-7xl relative z-10">
           <div className="text-center mb-24">
             <h2 className="text-3xl md:text-5xl font-medium mb-6 tracking-tight text-white">Works where you work.</h2>
             <p className="text-[16px] text-white/50 max-w-2xl mx-auto leading-relaxed">Gather notes centrally from all media, and you have full context to your knowledge meet.</p>

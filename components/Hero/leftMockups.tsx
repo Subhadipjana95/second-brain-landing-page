@@ -1,14 +1,25 @@
+"use client";
 import React from 'react'
+import { motion, useScroll, useTransform } from "motion/react";
 
 function LeftMockups() {
+    const { scrollY } = useScroll();
+    const rotateUpper = useTransform(scrollY, [0, 400], [-8, 0]);
+
     return (
         <div className="hidden lg:flex flex-col gap-0 absolute left-[3%] xl:left-[5%] bottom-[6%] z-30 pointer-events-none">
 
             {/* Voice Recognition Card */}
-            <div
-                className="w-[260px] rounded-2xl bg-[rgba(43,55,80,0.12)] backdrop-blur-xl p-4 shadow-[inset_0_0_0_1px_rgba(170,202,255,0.15),inset_0_0_20px_0_rgba(170,202,255,0.06),0_4px_24px_0_rgba(0,0,0,0.4)] mockup-glow-edge"
-                style={{ transform: 'rotate(-8deg) translateX(-20px) translateY(1px)', zIndex: 2 }}
+            <motion.div
+                initial={{ opacity: 0, y: 60, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 180, damping: 18, delay: 0.3 }}
+                style={{ zIndex: 2 }}
             >
+                <motion.div
+                    className="w-[260px] rounded-2xl bg-[rgba(43,55,80,0.12)] backdrop-blur-xl p-4 shadow-[inset_0_0_0_1px_rgba(170,202,255,0.15),inset_0_0_20px_0_rgba(170,202,255,0.06),0_4px_24px_0_rgba(0,0,0,0.4)] mockup-glow-edge"
+                    style={{ rotate: rotateUpper, x: -20, y: 1 }}
+                >
                 {/* Card header */}
                 <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -46,13 +57,20 @@ function LeftMockups() {
                         <span className="text-white/80"> and send it to the team.&quot;</span>
                     </p>
                 </div>
-            </div>
+                </motion.div>
+            </motion.div>
 
             {/* Smart Notes Card */}
-            <div
-                className="w-[230px] rounded-2xl bg-[rgba(43,55,80,0.12)] backdrop-blur-xl p-4 shadow-[inset_0_0_0_1px_rgba(170,202,255,0.15),inset_0_0_20px_0_rgba(170,202,255,0.06),0_4px_24px_0_rgba(0,0,0,0.4)] mockup-glow-edge"
-                style={{ transform: 'rotate(3deg) translateX(30px) translateY(-15px)', zIndex: 1 }}
+            <motion.div
+                initial={{ opacity: 0, y: 60, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 180, damping: 18, delay: 0.15 }}
+                style={{ zIndex: 1 }}
             >
+                <div
+                    className="w-[230px] rounded-2xl bg-[rgba(43,55,80,0.12)] backdrop-blur-xl p-4 shadow-[inset_0_0_0_1px_rgba(170,202,255,0.15),inset_0_0_20px_0_rgba(170,202,255,0.06),0_4px_24px_0_rgba(0,0,0,0.4)] mockup-glow-edge"
+                    style={{ transform: 'rotate(3deg) translateX(30px) translateY(-15px)' }}
+                >
                 <div className="flex items-center gap-2 mb-3">
                     <div className="w-7 h-7 rounded-lg bg-[rgba(170,202,255,0.1)] flex items-center justify-center">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(170,202,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -86,7 +104,8 @@ function LeftMockups() {
                         <span className="text-[11px] text-[rgba(170,202,255,0.5)] leading-relaxed">Follow up Friday 2 PM</span>
                     </div>
                 </div>
-            </div>
+                </div>
+            </motion.div>
         </div>
     )
 }

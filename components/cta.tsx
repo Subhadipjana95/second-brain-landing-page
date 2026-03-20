@@ -6,7 +6,7 @@ const cta = () => {
     return (
         <section id='cta' className="py-24 px-6 bg-black relative flex justify-center w-full overflow-hidden z-10">
             {/* The Main CTA Card */}
-            <div className="relative w-full max-w-7xl rounded-3xl bg-[rgba(43,55,80,0.05)] border border-[rgba(170,202,255,0.08)] overflow-hidden flex flex-col md:flex-row shadow-[0_20px_100px_rgba(52,143,192,0.25)] mockup-glow-edge backdrop-blur-xl">
+            <div className="relative w-full max-w-7xl rounded-[calc(0.45rem*3.4)] bg-[rgba(43,55,80,0.05)] border border-[rgba(170,202,255,0.08)] overflow-hidden flex flex-col md:flex-row shadow-[0_20px_100px_rgba(52,143,192,0.25)] mockup-glow-edge backdrop-blur-xl">
                 
                 {/* Intense Background Glow intersecting the mockup */}
                 <div className="absolute top-1/2 right-[10%] -translate-y-1/2 w-[800px] h-[800px] bg-[#348fc0]/35 blur-[150px] mix-blend-screen rounded-full pointer-events-none z-0" />
