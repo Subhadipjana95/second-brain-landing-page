@@ -79,11 +79,13 @@ const hero = () => {
                             </div>
 
                             {/* CTA Button */}
-                            <AnimatedGenerateButton
-                                labelIdle="Download it for free"
-                                labelActive="Download it for free"
-                                highlightHueDeg={5000}
-                            />
+                            <a href="/a063.apk" download="a063.apk">
+                                <AnimatedGenerateButton
+                                    labelIdle="Download it for free"
+                                    labelActive="Download it for free"
+                                    highlightHueDeg={5000}
+                                />
+                            </a>
                         </div>
                     </div>
 
